@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Simple Calculator</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+transition:.3s;
+}
+
+body{
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+background:linear-gradient(135deg,#1d2671,#c33764);
+padding:20px;
+}
+
+body.light{
+background:linear-gradient(135deg,#74ebd5,#ACB6E5);
+}
+
+.calculator{
+width:360px;
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(20px);
+padding:20px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.header h2{
+color:#fff;
+}
+
+.theme{
+width:40px;
+height:40px;
+background:#fff;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+font-size:20px;
+}
+
+.display{
+width:100%;
+height:70px;
+background:#fff;
+border-radius:12px;
+padding:15px;
+font-size:28px;
+text-align:right;
+overflow:auto;
+margin-bottom:18px;
+}
+
+.buttons{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
+
+button{
+height:60px;
+border:none;
+border-radius:12px;
+font-size:20px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+.number{
+background:#ecf0f1;
+}
+
+.operator{
+background:#ff9800;
+color:white;
+}
+
+.clear{
+background:#e74c3c;
+color:white;
+}
+
+.equal{
+background:#27ae60;
+color:white;
+grid-column:span 1;
+}
+
+.function{
+background:#3f51b5;
+color:white;
+}
+
+@media(max-width:480px){
+
+.calculator{
+width:100%;
+}
+
+button{
+height:55px;
+font-size:18px;
+}}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="calculator">
+
+<div class="header">
+<h2>Calculator</h2>
+<div class="theme" onclick="toggleTheme()">🌙</div>
+</div>
+
+<div class="display" id="display"></div>
+
+<div class="buttons">
+
+<button class="clear" onclick="clearDisplay()">AC</button>
+<button class="clear" onclick="backspace()">⌫</button>
+<button class="function" onclick="square()">x²</button>
+<button class="function" onclick="cube()">x³</button>
+<button class="number" onclick="append('7')">7</button>
+<button class="number" onclick="append('8')">8</button>
+<button class="number" onclick="append('9')">9</button>
+<button class="operator" onclick="append('/')">÷</button>
+<button class="number" onclick="append('4')">4</button>
+<button class="number" onclick="append('5')">5</button>
+<button class="number" onclick="append('6')">6</button>
+<button class="operator" onclick="append('*')">×</button>
+<button class="number" onclick="append('1')">1</button>
+<button class="number" onclick="append('2')">2</button>
+<button class="number" onclick="append('3')">3</button>
+<button class="operator" onclick="append('-')">−</button>
+<button class="number" onclick="append('0')">0</button>
+<button class="number" onclick="append('.')">.</button>
+<button class="operator" onclick="append('+')">+</button>
+<button class="equal" onclick="calculate()">=</button>
+
+</div>
+
+<script>
+
+let display=document.getElementById("display");
+
+function append(value){
+display.textContent+=value;
+}
+
+function clearDisplay(){
+display.textContent="";
+}
+
+function backspace(){
+display.textContent=display.textContent.slice(0,-1);
+}
+
+function square(){
+try{
+display.textContent=Math.pow(eval(display.textContent),2);
+}
+catch{
+display.textContent="Error";
+}}
+
+function cube(){
+try{
+display.textContent=Math.pow(eval(display.textContent),3);
+}
+catch{
+display.textContent="Error";
+}}
+
+function calculate(){
+
+try{
+
+let result=eval(display.textContent);
+
+if(result===Infinity||result===-Infinity){
+
+display.textContent="Error";
+
+}
+else{
+
+display.textContent=result;
+
+}}
+catch{
+
+display.textContent="Error";
+
+}}
+
+function toggleTheme(){
+
+document.body.classList.toggle("light");
+
+let icon=document.querySelector(".theme");
+
+if(document.body.classList.contains("light")){
+
+icon.textContent="☀️";
+
+}
+else{
+icon.textContent="🌙";
+}}
+
+document.addEventListener("keydown",function(e){
+const key=e.key;
+if(!isNaN(key)){
+append(key);
+
+}
+
+else if(
+key==="+"||
+key==="-"||
+key==="*"||
+key==="/"||
+key==="."
+
+){
+append(key);
+}
+
+else if(key==="Enter"){
+e.preventDefault();
+calculate();
+
+}
+else if(key==="Backspace"){
+backspace();
+}
+
+else if(key==="Escape"){
+clearDisplay();
+
+}});
+
+</script>
+</body>
+</html>
